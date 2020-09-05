@@ -321,7 +321,6 @@ class Market1501(DataSet):
 				img_path = os.path.join(self._base_dir, directory, file_name)
 				if file_name.startswith('-1') or not file_name.endswith('.jpg'):
 					continue
-				print(file_name)
 				id, camera, style, frame, _ = regex.match(file_name).groups()
 				class_id = int(id)
 				content_id = '_'.join((camera, style, frame, _))
