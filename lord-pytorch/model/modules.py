@@ -194,9 +194,10 @@ class Encoder(nn.Module):
 			nn.Conv2d(in_channels=256, out_channels=256, kernel_size=4, stride=2, padding=1),
 			nn.LeakyReLU()
 		)
+		size_fc = (img_shape[0] // 16) * (img_shape[1] // 16) * 256
 
 		self.fc_layers = nn.Sequential(
-			nn.Linear(in_features=4096, out_features=256),
+			nn.Linear(in_features=size_fc, out_features=256),
 			nn.LeakyReLU(),
 
 			nn.Linear(in_features=256, out_features=256),
