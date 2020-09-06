@@ -210,7 +210,7 @@ class Encoder(nn.Module):
 		batch_size = x.shape[0]
 
 		x = self.conv_layers(x)
-		x = x.view((batch_size, -1))
+		x = x.contiguous().view((batch_size, -1))
 
 		x = self.fc_layers(x)
 		return x
