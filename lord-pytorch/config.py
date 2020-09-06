@@ -13,7 +13,7 @@ base_config = dict(
 	),
 
 	train=dict(
-		batch_size=128,
+		batch_size=64,
 		n_epochs=200,
 
 		learning_rate=dict(
@@ -24,7 +24,7 @@ base_config = dict(
 	),
 
 	train_encoders=dict(
-		batch_size=128,
+		batch_size=64,
 		n_epochs=200,
 
 		learning_rate=dict(
