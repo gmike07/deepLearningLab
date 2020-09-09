@@ -2,7 +2,7 @@ base_config = dict(
 	content_dim=128,
 	class_dim=256,
 
-	content_std=1,
+	content_std=0.75,
 	content_decay=1e-4,
 
 	n_adain_layers=4,
