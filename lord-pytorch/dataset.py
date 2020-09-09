@@ -323,7 +323,7 @@ class Market1501(DataSet):
 					continue
 				id, camera, style, frame, _ = regex.match(file_name).groups()
 				class_id = int(id)
-				content_id = '_'.join((camera, style, _))
+				content_id = '_'.join((camera, style, frame, _))
 
 				img_paths.append(img_path)
 				class_ids.append(class_id)
