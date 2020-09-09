@@ -71,9 +71,12 @@ def split_samples(args):
 
 def train(args):
 	assets = AssetManager(args.base_dir)
-	model_dir = assets.recreate_model_dir(args.model_name)
-	tensorboard_dir = assets.recreate_tensorboard_dir(args.model_name)
-
+	if not args.retrain:
+		model_dir = assets.recreate_model_dir(args.model_name)
+		tensorboard_dir = assets.recreate_tensorboard_dir(args.model_name)
+	else:
+		model_dir = assets.get_model_dir(args.model_name)
+		tensorboard_dir = assets.get_tensorboard_dir(args.model_name)
 	data = np.load(assets.get_preprocess_file_path(args.data_name))
 	imgs = data['imgs'].astype(np.float32) / 255.0
 
@@ -86,12 +89,16 @@ def train(args):
 	config.update(base_config)
 
 	lord = Lord(config)
+	if args.retrain:
+		lord.load(model_dir, latent=True, amortized=False)
+	lord.config = config
 	lord.train_latent(
 		imgs=imgs,
 		classes=data['classes'],
 
 		model_dir=model_dir,
-		tensorboard_dir=tensorboard_dir
+		tensorboard_dir=tensorboard_dir,
+		retrain=args.retrain
 	)
 
 	lord.save(model_dir, latent=True, amortized=False)
@@ -149,6 +156,7 @@ def main():
 	train_parser = action_parsers.add_parser('train')
 	train_parser.add_argument('-dn', '--data-name', type=str, required=True)
 	train_parser.add_argument('-mn', '--model-name', type=str, required=True)
+	train_parser.add_argument('-retrain', '--retrain', default=False, type=bool, required=False)
 	train_parser.set_defaults(func=train)
 
 	train_encoders_parser = action_parsers.add_parser('train-encoders')
