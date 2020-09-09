@@ -48,8 +48,7 @@ class Lord:
 		if amortized:
 			torch.save(self.amortized_model.state_dict(), os.path.join(model_dir, 'amortized.pth'))
 
-	def train_latent(self, imgs, classes, model_dir, tensorboard_dir):
-		self.latent_model = LatentModel(self.config)
+	def train_latent(self, imgs, classes, model_dir, tensorboard_dir, retrain=False):
 
 		data = dict(
 			img=torch.from_numpy(imgs).permute(0, 3, 1, 2),
@@ -64,7 +63,9 @@ class Lord:
 			num_workers=1, pin_memory=True, drop_last=True
 		)
 
-		self.latent_model.init()
+		if not retrain:
+			self.latent_model = LatentModel(self.config)
+			self.latent_model.init()
 		self.latent_model.to(self.device)
 
 		criterion = VGGDistance(self.config['perceptual_loss']['layers']).to(self.device)
