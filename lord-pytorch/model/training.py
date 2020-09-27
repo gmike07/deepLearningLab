@@ -69,7 +69,7 @@ class Lord:
 		self.latent_model.to(self.device)
 
 		criterion = VGGDistance(self.config['perceptual_loss']['layers']).to(self.device)
-		content_criterion = nn.KLDivLoss()
+		# content_criterion = nn.KLDivLoss()
 
 		optimizer = Adam([
 			{
@@ -103,7 +103,7 @@ class Lord:
 				out = self.latent_model(batch['img_id'], batch['class_id'])
 
 				content_penalty = torch.sum(out['content_code'] ** 2, dim=1).mean()
-				content_penalty = content_criterion(out['content_code'], torch.normal(0, self.config['content_std'], size=out['content_code'].shape).to(self.device))
+				# content_penalty = content_criterion(out['content_code'], torch.normal(0, self.config['content_std'], size=out['content_code'].shape).to(self.device))
 				loss = criterion(out['img'], batch['img']) + self.config['content_decay'] * content_penalty
 
 				loss.backward()
